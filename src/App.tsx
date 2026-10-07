@@ -413,15 +413,19 @@ export default function App() {
             <div className="flex-shrink-0">
               <a 
                 href="#/home" 
-                onClick={() => navigateTo("home")}
-                className="text-lg sm:text-xl font-display font-bold tracking-widest text-gold-gradient cursor-pointer block"
+                onClick={(e) => {
+                  e.preventDefault();
+                  navigateTo("home");
+                }}
+                className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-display font-bold tracking-widest text-gold-gradient cursor-pointer block whitespace-nowrap"
               >
-                BLUE SEA GARDEN HOTEL & GARDENS
+                <span className="hidden sm:inline">BLUE SEA GARDEN HOTEL & GARDENS</span>
+                <span className="inline sm:hidden">BLUE SEA GARDEN</span>
               </a>
             </div>
 
             {/* Zone 2: Navigation Links */}
-            <nav className="hidden md:flex items-center space-x-6">
+            <nav className="hidden lg:flex items-center space-x-6">
               {[
                 { name: "Home", page: "home" },
                 { name: "Rooms & Suites", page: "rooms" },
@@ -436,7 +440,7 @@ export default function App() {
                     e.preventDefault();
                     navigateTo(item.page as any);
                   }}
-                  className={`text-sm font-medium tracking-wider uppercase transition-all duration-200 relative py-1 hover:text-[#f3e5ab] ${
+                  className={`text-xs font-semibold tracking-wider uppercase transition-all duration-200 relative py-1 hover:text-[#f3e5ab] ${
                     currentPage === item.page 
                       ? "text-[#d4af37]" 
                       : "text-gray-300"
@@ -451,24 +455,24 @@ export default function App() {
             </nav>
 
             {/* Zone 3: Navigation Actions (Call Now & Book Stay) */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="hidden lg:flex items-center space-x-4">
               <a 
                 href="tel:+902422488213" 
-                className="px-3 py-2 text-xs font-semibold tracking-wider text-gray-300 hover:text-[#f3e5ab] flex items-center gap-1.5 transition-all duration-200 whitespace-nowrap"
+                className="px-3 py-2 text-[11px] font-bold tracking-wider text-gray-300 hover:text-[#f3e5ab] flex items-center gap-1.5 transition-all duration-200 whitespace-nowrap"
               >
-                <Phone className="w-3.5 h-3.5 text-[#d4af37]" />
+                <Phone className="w-3 h-3 text-[#d4af37]" />
                 +90 242 248 82 13
               </a>
               <button 
                 onClick={() => navigateTo("contact")}
-                className="px-4 py-2 text-xs uppercase tracking-wider font-semibold btn-gold rounded-none hover:shadow-lg transition-all duration-300 whitespace-nowrap"
+                className="px-4 py-2 text-[11px] uppercase tracking-wider font-bold btn-gold rounded-none hover:shadow-lg transition-all duration-300 whitespace-nowrap"
               >
                 Book Your Stay
               </button>
             </div>
 
             {/* Mobile menu trigger */}
-            <div className="md:hidden flex items-center space-x-3">
+            <div className="lg:hidden flex items-center space-x-3">
               <a 
                 href="tel:+902422488213" 
                 className="p-2 text-gray-300 hover:text-[#f3e5ab] transition-colors"
@@ -490,7 +494,7 @@ export default function App() {
 
         {/* Mobile Navigation Dropdown Menu (Sticky Cap Safety Checked) */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-[#110817]/95 backdrop-blur-lg border-b border-[#d4af37]/20 absolute top-full left-0 right-0 py-4 px-6 shadow-2xl transition-all duration-300 animate-fadeIn">
+          <div className="lg:hidden bg-[#110817]/95 backdrop-blur-lg border-b border-[#d4af37]/20 absolute top-full left-0 right-0 py-4 px-6 shadow-2xl transition-all duration-300 animate-fadeIn">
             <div className="flex flex-col space-y-4">
               {[
                 { name: "Home", page: "home" },
