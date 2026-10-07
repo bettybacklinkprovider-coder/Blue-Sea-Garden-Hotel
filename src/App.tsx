@@ -27,7 +27,18 @@ import {
   CalendarDays,
   Info,
   Clock,
-  Briefcase
+  Briefcase,
+  Copy,
+  AlertTriangle,
+  RefreshCw,
+  Sliders,
+  Globe,
+  Search,
+  Code,
+  Layers,
+  FileText,
+  Trash2,
+  Link
 } from "lucide-react";
 
 // --- DOMAIN TYPES & CONSTANTS ---
@@ -138,9 +149,50 @@ const GALLERY_DATA = [
   }
 ];
 
+// --- SEO SLUG & VERCEL LINK UTILITY FUNCTION ---
+const slugifyText = (text: string, options: { separator: string; removeNumbers: boolean; lowercase: boolean }) => {
+  let result = text;
+  
+  // Normalize Turkish & accented characters to standard alphanumeric
+  result = result
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // Remove accent marks
+    .replace(/[ıI]/g, "i")
+    .replace(/[ğĞ]/g, "g")
+    .replace(/[üÜ]/g, "u")
+    .replace(/[şŞ]/g, "s")
+    .replace(/[öÖ]/g, "o")
+    .replace(/[çÇ]/g, "c");
+
+  if (options.lowercase) {
+    result = result.toLowerCase();
+  }
+
+  // Strip non-alphanumeric except space, hyphen, and underscore
+  if (options.removeNumbers) {
+    result = result.replace(/[^a-zA-Z\s\-_]/g, "");
+  } else {
+    result = result.replace(/[^a-zA-Z0-9\s\-_]/g, "");
+  }
+
+  const sep = options.separator || "-";
+  // Replace multiple spaces, hyphens, and underscores with a single separator
+  result = result.replace(/[\s\-_]+/g, sep);
+
+  // Trim leading/trailing separators
+  if (sep) {
+    const escapedSep = sep.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
+    const leadingReg = new RegExp(`^${escapedSep}+`);
+    const trailingReg = new RegExp(`${escapedSep}+$`);
+    result = result.replace(leadingReg, "").replace(trailingReg, "");
+  }
+
+  return result;
+};
+
 export default function App() {
   // --- STATE-BASED ROUTER ---
-  const [currentPage, setCurrentPage] = useState<"home" | "rooms" | "gallery" | "contact">("home");
+  const [currentPage, setCurrentPage] = useState<"home" | "rooms" | "gallery" | "contact" | "linktool">("home");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedRoomForBooking, setSelectedRoomForBooking] = useState<string>("standard");
 
@@ -162,11 +214,34 @@ export default function App() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [bookingConfirmation, setBookingConfirmation] = useState<any | null>(null);
 
+  // --- VERCEL LINK READY (SEO) STATES ---
+  const [activeSubTab, setActiveSubTab] = useState<"single" | "batch" | "auditor">("single");
+  const [singleText, setSingleText] = useState<string>("Luxury Suite Booking in Antalya Türkiye");
+  const [customDomain, setCustomDomain] = useState<string>("blue-sea-garden.vercel.app");
+  const [slugSeparator, setSlugSeparator] = useState<string>("-");
+  const [removeNumbers, setRemoveNumbers] = useState<boolean>(false);
+  const [lowerCaseOnly, setLowerCaseOnly] = useState<boolean>(true);
+  const [copyNotification, setCopyNotification] = useState<string>("");
+
+  const [batchText, setBatchText] = useState<string>(
+    "Hadrian's Gate Historic Tour\nLuxury Boutique Rooms Antalya\nTerrace Garden Dining Breakfast Menu\nAntalya Cliffs Beach Access\nContact Blue Sea Garden Hotel"
+  );
+
+  const [auditText, setAuditText] = useState<string>(
+    "https://blue-sea-garden.vercel.app/About-Us\nhttps://blue-sea-garden.vercel.app/ROOMS_AND_SUITES\nhttps://blue-sea-garden.vercel.app/Gallery-Main?idx=2\nhttps://blue-sea-garden.vercel.app/contact-booking\nhttps://blue-sea-garden.vercel.app/FAQ_section"
+  );
+
+  const copyToClipboard = (text: string, label: string) => {
+    navigator.clipboard.writeText(text);
+    setCopyNotification(label);
+    setTimeout(() => setCopyNotification(""), 2000);
+  };
+
   // Listen for hash changes to support natural browser routing (#home, #rooms, etc.)
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash.replace("#/", "").replace("#", "");
-      if (hash === "home" || hash === "rooms" || hash === "gallery" || hash === "contact") {
+      if (hash === "home" || hash === "rooms" || hash === "gallery" || hash === "contact" || hash === "linktool") {
         setCurrentPage(hash as any);
       } else {
         // default route
@@ -188,7 +263,7 @@ export default function App() {
   }, []);
 
   // Update hash when page state changes
-  const navigateTo = (page: "home" | "rooms" | "gallery" | "contact") => {
+  const navigateTo = (page: "home" | "rooms" | "gallery" | "contact" | "linktool") => {
     window.location.hash = `#/${page}`;
     setMobileMenuOpen(false);
   };
@@ -346,12 +421,13 @@ export default function App() {
             </div>
 
             {/* Zone 2: Navigation Links */}
-            <nav className="hidden md:flex items-center space-x-8">
+            <nav className="hidden md:flex items-center space-x-6">
               {[
                 { name: "Home", page: "home" },
                 { name: "Rooms & Suites", page: "rooms" },
                 { name: "Gallery", page: "gallery" },
-                { name: "Contact & Booking", page: "contact" }
+                { name: "Contact & Booking", page: "contact" },
+                { name: "Vercel Link Ready", page: "linktool" }
               ].map((item) => (
                 <a
                   key={item.page}
@@ -420,7 +496,8 @@ export default function App() {
                 { name: "Home", page: "home" },
                 { name: "Rooms & Suites", page: "rooms" },
                 { name: "Gallery", page: "gallery" },
-                { name: "Contact & Booking", page: "contact" }
+                { name: "Contact & Booking", page: "contact" },
+                { name: "Vercel Link Ready", page: "linktool" }
               ].map((item) => (
                 <a
                   key={item.page}
@@ -1658,6 +1735,528 @@ export default function App() {
           </div>
         )}
 
+        {currentPage === "linktool" && (
+          <div className="animate-fadeIn max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-10">
+            
+            {/* Header section */}
+            <div className="text-center max-w-3xl mx-auto space-y-4">
+              <div className="inline-flex items-center gap-2">
+                <span className="h-[1px] w-8 bg-[#d4af37]" />
+                <span className="font-display text-xs tracking-[0.3em] uppercase text-[#f3e5ab] font-bold">Backlink SEO & Vercel Prep</span>
+                <span className="h-[1px] w-8 bg-[#d4af37]" />
+              </div>
+              <h1 className="text-3xl sm:text-5xl font-display font-bold text-white tracking-widest">
+                Vercel Link Ready
+              </h1>
+              <p className="text-gray-300 font-light text-sm sm:text-base leading-relaxed text-wrap-balance italic font-editorial">
+                "Vercel par deploy karte waqt uppercase characters link ko break kar sakte hain." Convert your page titles, anchors, and keywords to strictly lowercase (small alphabets) with perfect hyphens.
+              </p>
+            </div>
+
+            {/* Quick alert bar explaining case sensitivity on Vercel */}
+            <div className="bg-[#1c0827]/80 border border-[#d4af37]/30 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-[#d4af37] shrink-0 mt-0.5 sm:mt-0" />
+                <div className="space-y-0.5">
+                  <h4 className="text-sm font-semibold text-white">Why Case-Sensitivity Matters on Vercel</h4>
+                  <p className="text-xs text-gray-300 font-light leading-relaxed">
+                    Vercel hosts on Linux, which is strictly case-sensitive. If you type <code className="text-[#f3e5ab] bg-[#0d0611] px-1 py-0.5 rounded">/About</code> but your Vercel route is <code className="text-[#f3e5ab] bg-[#0d0611] px-1 py-0.5 rounded">/about</code>, the backlink will throw a <strong className="text-red-400">404 Not Found</strong>. Keeping alphabets small ensures links are always ready.
+                  </p>
+                </div>
+              </div>
+              <div className="text-xs text-[#d4af37] font-semibold whitespace-nowrap bg-[#0d0611] px-3 py-1.5 border border-[#d4af37]/25">
+                Active: Case-Insensitive Bypass
+              </div>
+            </div>
+
+            {/* Main tab switching container */}
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+              
+              {/* Left Column: Navigation Tabs & Settings */}
+              <div className="lg:col-span-4 space-y-6">
+                
+                {/* Tab select buttons */}
+                <div className="bg-[#160a1f] border border-[#d4af37]/15 p-2 space-y-1">
+                  <span className="text-[10px] uppercase font-mono tracking-widest text-gray-400 block px-3 py-1.5 font-bold">Select Utility</span>
+                  
+                  <button
+                    onClick={() => setActiveSubTab("single")}
+                    className={`w-full text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-wider flex items-center justify-between transition-colors ${
+                      activeSubTab === "single" 
+                        ? "bg-[#d4af37] text-[#0d0611]" 
+                        : "text-gray-300 hover:bg-[#2a1135] hover:text-[#f3e5ab]"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Link className="w-4 h-4" />
+                      Single Link Slugger
+                    </span>
+                    <ChevronRight className="w-3 h-3" />
+                  </button>
+
+                  <button
+                    onClick={() => setActiveSubTab("batch")}
+                    className={`w-full text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-wider flex items-center justify-between transition-colors ${
+                      activeSubTab === "batch" 
+                        ? "bg-[#d4af37] text-[#0d0611]" 
+                        : "text-gray-300 hover:bg-[#2a1135] hover:text-[#f3e5ab]"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <Layers className="w-4 h-4" />
+                      Batch Slug Generator
+                    </span>
+                    <ChevronRight className="w-3 h-3" />
+                  </button>
+
+                  <button
+                    onClick={() => setActiveSubTab("auditor")}
+                    className={`w-full text-left px-3 py-2.5 text-xs font-semibold uppercase tracking-wider flex items-center justify-between transition-colors ${
+                      activeSubTab === "auditor" 
+                        ? "bg-[#d4af37] text-[#0d0611]" 
+                        : "text-gray-300 hover:bg-[#2a1135] hover:text-[#f3e5ab]"
+                    }`}
+                  >
+                    <span className="flex items-center gap-2">
+                      <ShieldCheck className="w-4 h-4" />
+                      Vercel Link Auditor
+                    </span>
+                    <ChevronRight className="w-3 h-3" />
+                  </button>
+                </div>
+
+                {/* Shared Config Panel */}
+                <div className="bg-[#160a1f] border border-[#d4af37]/15 p-5 space-y-4">
+                  <div className="flex items-center gap-2 pb-2 border-b border-[#d4af37]/15">
+                    <Sliders className="w-4 h-4 text-[#d4af37]" />
+                    <h3 className="text-xs uppercase tracking-widest font-bold text-white">Slug Configuration</h3>
+                  </div>
+
+                  {/* Vercel Custom Target Domain */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs text-gray-300 font-semibold block">Target Vercel Domain</label>
+                    <div className="relative">
+                      <Globe className="absolute left-3 top-2.5 w-4 h-4 text-[#d4af37]/60" />
+                      <input 
+                        type="text" 
+                        value={customDomain}
+                        onChange={(e) => setCustomDomain(e.target.value)}
+                        placeholder="my-project.vercel.app"
+                        className="w-full bg-[#0d0611] text-white border border-[#d4af37]/20 pl-9 pr-3 py-2 text-xs focus:border-[#d4af37] focus:outline-none"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Custom Separator */}
+                  <div className="space-y-1.5">
+                    <label className="text-xs text-gray-300 font-semibold block">Slug Separator</label>
+                    <select 
+                      value={slugSeparator}
+                      onChange={(e) => setSlugSeparator(e.target.value)}
+                      className="w-full bg-[#0d0611] text-white border border-[#d4af37]/20 px-3 py-2 text-xs focus:border-[#d4af37] focus:outline-none"
+                    >
+                      <option value="-">Hyphen ( - ) [Recommended for SEO]</option>
+                      <option value="_">Underscore ( _ )</option>
+                      <option value="">None (Concatenated)</option>
+                    </select>
+                  </div>
+
+                  {/* Options */}
+                  <div className="space-y-3 pt-2">
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={lowerCaseOnly} 
+                        onChange={(e) => setLowerCaseOnly(e.target.checked)}
+                        className="rounded border-[#d4af37]/35 text-[#d4af37] focus:ring-[#d4af37] bg-[#0d0611] w-4 h-4"
+                      />
+                      <span className="text-xs text-gray-300 font-light select-none">Strictly Lowercase Small Alphabets</span>
+                    </label>
+
+                    <label className="flex items-center gap-2 cursor-pointer">
+                      <input 
+                        type="checkbox" 
+                        checked={removeNumbers} 
+                        onChange={(e) => setRemoveNumbers(e.target.checked)}
+                        className="rounded border-[#d4af37]/35 text-[#d4af37] focus:ring-[#d4af37] bg-[#0d0611] w-4 h-4"
+                      />
+                      <span className="text-xs text-gray-300 font-light select-none">Remove Numbers & Symbols</span>
+                    </label>
+                  </div>
+                </div>
+
+              </div>
+
+              {/* Right Column: Active Interactive Utility Work Area */}
+              <div className="lg:col-span-8 bg-[#160a1f] border border-[#d4af37]/15 p-6 sm:p-8 space-y-6">
+                
+                {/* TAB 1: SINGLE CONVERTER */}
+                {activeSubTab === "single" && (
+                  <div className="space-y-6">
+                    <div className="space-y-1">
+                      <h2 className="text-lg font-display font-bold text-white uppercase tracking-wider">Single Link Slugger</h2>
+                      <p className="text-xs text-gray-400 font-light">Input any word, keyword phrase or page title to generate Vercel-ready lowercase links.</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <label className="text-xs font-semibold text-gray-300 block">Enter Text / Keyword</label>
+                      <input 
+                        type="text"
+                        value={singleText}
+                        onChange={(e) => setSingleText(e.target.value)}
+                        placeholder="e.g., Luxury Deluxe Suite Antalya"
+                        className="w-full bg-[#0d0611] text-white border border-[#d4af37]/25 px-4 py-3 text-sm focus:border-[#d4af37] focus:outline-none"
+                      />
+                    </div>
+
+                    {/* LIVE BROWSER MOCK PREVIEW (Case-Insensitive Visualization) */}
+                    <div className="space-y-2">
+                      <span className="text-xs font-semibold text-gray-300 block">Live Browser URL Preview</span>
+                      <div className="bg-[#0d0611] border border-[#d4af37]/15 p-3 rounded-none">
+                        <div className="flex items-center gap-2 pb-2 border-b border-gray-800 text-[10px] text-gray-500 font-mono">
+                          <span className="w-2.5 h-2.5 rounded-full bg-red-600/60" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-yellow-600/60" />
+                          <span className="w-2.5 h-2.5 rounded-full bg-green-600/60" />
+                          <span className="ml-2 overflow-hidden truncate">https://{customDomain || "vercel.app"}/...</span>
+                        </div>
+                        <div className="pt-2 font-mono text-xs sm:text-sm text-[#f3e5ab] select-all truncate">
+                          https://{customDomain || "vercel-app.vercel.app"}/{slugifyText(singleText, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly })}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Ready Copy Options Area */}
+                    <div className="space-y-4 pt-4 border-t border-[#d4af37]/15">
+                      <h4 className="text-xs font-bold uppercase tracking-widest text-[#d4af37]">Ready-to-Use Code Formats</h4>
+                      
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        
+                        {/* Option 1: Pure slug */}
+                        <div className="bg-[#0d0611] border border-gray-800/80 p-3 flex flex-col justify-between space-y-2">
+                          <div>
+                            <span className="text-[9px] uppercase tracking-wider text-gray-500 font-mono block">Pure Small Slug</span>
+                            <code className="text-xs text-white font-mono block truncate pt-1">
+                              {slugifyText(singleText, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly })}
+                            </code>
+                          </div>
+                          <button
+                            onClick={() => copyToClipboard(slugifyText(singleText, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly }), "Pure Slug")}
+                            className="w-full py-1.5 bg-[#160a1f] hover:bg-[#2a1135] text-[10px] text-[#d4af37] hover:text-white uppercase tracking-wider font-semibold border border-[#d4af37]/20 transition-colors flex items-center justify-center gap-1.5"
+                          >
+                            <Copy className="w-3 h-3" /> Copy Slug
+                          </button>
+                        </div>
+
+                        {/* Option 2: Complete Vercel URL */}
+                        <div className="bg-[#0d0611] border border-gray-800/80 p-3 flex flex-col justify-between space-y-2">
+                          <div>
+                            <span className="text-[9px] uppercase tracking-wider text-gray-500 font-mono block">Complete Vercel URL</span>
+                            <code className="text-xs text-white font-mono block truncate pt-1">
+                              https://{customDomain}/{slugifyText(singleText, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly })}
+                            </code>
+                          </div>
+                          <button
+                            onClick={() => copyToClipboard(`https://${customDomain}/${slugifyText(singleText, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly })}`, "Complete Vercel URL")}
+                            className="w-full py-1.5 bg-[#160a1f] hover:bg-[#2a1135] text-[10px] text-[#d4af37] hover:text-white uppercase tracking-wider font-semibold border border-[#d4af37]/20 transition-colors flex items-center justify-center gap-1.5"
+                          >
+                            <Copy className="w-3 h-3" /> Copy Full URL
+                          </button>
+                        </div>
+
+                        {/* Option 3: HTML Backlink Anchor */}
+                        <div className="bg-[#0d0611] border border-gray-800/80 p-3 flex flex-col justify-between space-y-2">
+                          <div>
+                            <span className="text-[9px] uppercase tracking-wider text-gray-500 font-mono block">HTML Backlink Anchor</span>
+                            <code className="text-[10px] text-white font-mono block truncate pt-1">
+                              {`<a href="https://${customDomain}/${slugifyText(singleText, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly })}">${singleText}</a>`}
+                            </code>
+                          </div>
+                          <button
+                            onClick={() => copyToClipboard(`<a href="https://${customDomain}/${slugifyText(singleText, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly })}">${singleText}</a>`, "HTML Link")}
+                            className="w-full py-1.5 bg-[#160a1f] hover:bg-[#2a1135] text-[10px] text-[#d4af37] hover:text-white uppercase tracking-wider font-semibold border border-[#d4af37]/20 transition-colors flex items-center justify-center gap-1.5"
+                          >
+                            <Code className="w-3 h-3" /> Copy HTML Backlink
+                          </button>
+                        </div>
+
+                        {/* Option 4: Markdown Backlink Link */}
+                        <div className="bg-[#0d0611] border border-gray-800/80 p-3 flex flex-col justify-between space-y-2">
+                          <div>
+                            <span className="text-[9px] uppercase tracking-wider text-gray-500 font-mono block">Markdown Backlink Link</span>
+                            <code className="text-[10px] text-white font-mono block truncate pt-1">
+                              {`[${singleText}](https://${customDomain}/${slugifyText(singleText, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly })})`}
+                            </code>
+                          </div>
+                          <button
+                            onClick={() => copyToClipboard(`[${singleText}](https://${customDomain}/${slugifyText(singleText, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly })})`, "Markdown Link")}
+                            className="w-full py-1.5 bg-[#160a1f] hover:bg-[#2a1135] text-[10px] text-[#d4af37] hover:text-white uppercase tracking-wider font-semibold border border-[#d4af37]/20 transition-colors flex items-center justify-center gap-1.5"
+                          >
+                            <FileText className="w-3 h-3" /> Copy Markdown Link
+                          </button>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {/* TAB 2: BATCH SLUGGER */}
+                {activeSubTab === "batch" && (
+                  <div className="space-y-6">
+                    <div className="space-y-1">
+                      <h2 className="text-lg font-display font-bold text-white uppercase tracking-wider">Batch Slug Generator</h2>
+                      <p className="text-xs text-gray-400 font-light">Paste multiple lines of text, article titles or anchor phrases to convert them all into small, clean URL links in one go.</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-semibold text-gray-300">Paste Lines (One title per line)</label>
+                        <button 
+                          onClick={() => setBatchText("")}
+                          className="text-[10px] text-red-400 hover:text-red-300 flex items-center gap-1 font-mono"
+                        >
+                          <Trash2 className="w-3 h-3" /> Clear Textarea
+                        </button>
+                      </div>
+                      <textarea 
+                        rows={6}
+                        value={batchText}
+                        onChange={(e) => setBatchText(e.target.value)}
+                        placeholder="Paste text list here..."
+                        className="w-full bg-[#0d0611] text-white font-mono border border-[#d4af37]/25 p-4 text-xs focus:border-[#d4af37] focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Batch converted table display */}
+                    <div className="space-y-3 pt-3">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-[#d4af37] uppercase tracking-wider">Converted Small Ready Links</span>
+                        <button
+                          onClick={() => {
+                            const allSlugs = batchText.split("\n")
+                              .filter(line => line.trim())
+                              .map(line => `https://${customDomain}/${slugifyText(line, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly })}`)
+                              .join("\n");
+                            copyToClipboard(allSlugs, "All Batch URLs");
+                          }}
+                          className="px-3 py-1 bg-[#d4af37] hover:bg-[#f3e5ab] text-[#0d0611] font-bold text-[10px] uppercase tracking-wider flex items-center gap-1"
+                        >
+                          <Copy className="w-3 h-3" /> Copy All URL List
+                        </button>
+                      </div>
+
+                      <div className="bg-[#0d0611] border border-[#d4af37]/15 overflow-x-auto max-h-[250px] overflow-y-auto">
+                        <table className="w-full text-left border-collapse text-xs">
+                          <thead>
+                            <tr className="bg-[#1a0a23] border-b border-[#d4af37]/20 text-[10px] font-mono uppercase tracking-wider text-[#f3e5ab]">
+                              <th className="p-3">Original Phrase</th>
+                              <th className="p-3">Vercel Ready Lowercase Link</th>
+                            </tr>
+                          </thead>
+                          <tbody className="divide-y divide-gray-900 font-mono text-[11px]">
+                            {batchText.split("\n").filter(line => line.trim()).map((line, index) => {
+                              const slug = slugifyText(line, { separator: slugSeparator, removeNumbers, lowercase: lowerCaseOnly });
+                              return (
+                                <tr key={index} className="hover:bg-[#1a0a23]/30">
+                                  <td className="p-3 text-gray-400 truncate max-w-[200px]">{line}</td>
+                                  <td className="p-3 text-[#f3e5ab] font-bold">
+                                    <span className="text-gray-600 font-normal">/{slugSeparator ? "" : ""}</span>{slug}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                            {batchText.split("\n").filter(line => line.trim()).length === 0 && (
+                              <tr>
+                                <td colSpan={2} className="p-6 text-center text-gray-500 italic">No phrases entered. Type some lines to see them batch convert.</td>
+                              </tr>
+                            )}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+
+                  </div>
+                )}
+
+                {/* TAB 3: AUDITOR & CHARACTER CHECKER */}
+                {activeSubTab === "auditor" && (
+                  <div className="space-y-6">
+                    <div className="space-y-1">
+                      <h2 className="text-lg font-display font-bold text-white uppercase tracking-wider">Vercel Link Auditor</h2>
+                      <p className="text-xs text-gray-400 font-light">Audit your backlinks or internal relative paths for uppercase alphabets, spaces, and dangerous characters that cause broken 404 links on Vercel.</p>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center justify-between">
+                        <label className="text-xs font-semibold text-gray-300">Enter URLs/Paths (One per line)</label>
+                        <button 
+                          onClick={() => setAuditText("")}
+                          className="text-[10px] text-red-400 hover:text-red-300 flex items-center gap-1 font-mono"
+                        >
+                          <Trash2 className="w-3 h-3" /> Clear List
+                        </button>
+                      </div>
+                      <textarea 
+                        rows={5}
+                        value={auditText}
+                        onChange={(e) => setAuditText(e.target.value)}
+                        placeholder="Paste URLs to check here..."
+                        className="w-full bg-[#0d0611] text-white font-mono border border-[#d4af37]/25 p-4 text-xs focus:border-[#d4af37] focus:outline-none"
+                      />
+                    </div>
+
+                    {/* Audit Analysis Results */}
+                    <div className="space-y-3 pt-2">
+                      <div className="flex items-center justify-between flex-wrap gap-2">
+                        <span className="text-xs font-bold text-[#d4af37] uppercase tracking-wider">Audit Results</span>
+                        <button
+                          onClick={() => {
+                            // Automatically lowercase everything in the paths while keeping standard domain structure
+                            const fixedList = auditText.split("\n")
+                              .map(line => {
+                                if (!line.trim()) return "";
+                                try {
+                                  // If it's a full URL, lowercase the path only
+                                  if (line.startsWith("http://") || line.startsWith("https://")) {
+                                    const urlObj = new URL(line);
+                                    const pathParts = urlObj.pathname.split("/").map(part => slugifyText(part, { separator: slugSeparator, removeNumbers: false, lowercase: true }));
+                                    urlObj.pathname = pathParts.join("/");
+                                    return urlObj.toString();
+                                  } else {
+                                    // Relative path
+                                    return line.split("/").map(part => slugifyText(part, { separator: slugSeparator, removeNumbers: false, lowercase: true })).join("/");
+                                  }
+                                } catch (e) {
+                                  // Fallback direct lowercase trim
+                                  return line.toLowerCase().replace(/\s+/g, "-");
+                                }
+                              })
+                              .filter(line => line)
+                              .join("\n");
+                            setAuditText(fixedList);
+                            copyToClipboard(fixedList, "Auto-Fixed Lowercase URLs");
+                          }}
+                          className="px-3 py-1.5 bg-[#d4af37] hover:bg-[#f3e5ab] text-[#0d0611] font-bold text-[10px] uppercase tracking-wider flex items-center gap-1"
+                        >
+                          <RefreshCw className="w-3 h-3" /> Auto-Fix All to Small Alphabets & Copy
+                        </button>
+                      </div>
+
+                      <div className="space-y-3">
+                        {auditText.split("\n").filter(line => line.trim()).map((line, index) => {
+                          // Simple validation check: check for any uppercase letters after the domain
+                          let pathToCheck = line;
+                          try {
+                            if (line.startsWith("http://") || line.startsWith("https://")) {
+                              const urlObj = new URL(line);
+                              pathToCheck = urlObj.pathname + urlObj.search + urlObj.hash;
+                            }
+                          } catch (e) {}
+
+                          const hasUppercase = /[A-Z]/.test(pathToCheck);
+                          const hasSpaces = /\s/.test(pathToCheck);
+                          const isOK = !hasUppercase && !hasSpaces;
+
+                          return (
+                            <div 
+                              key={index} 
+                              className={`p-3 border font-mono text-[11px] flex flex-col sm:flex-row sm:items-center justify-between gap-2 ${
+                                isOK 
+                                  ? "bg-green-950/20 border-green-500/20 text-green-200" 
+                                  : "bg-red-950/20 border-red-500/20 text-red-200"
+                              }`}
+                            >
+                              <div className="space-y-1 overflow-hidden">
+                                <span className="font-semibold block truncate select-all">{line}</span>
+                                <div className="flex items-center gap-3 text-[10px]">
+                                  {isOK ? (
+                                    <span className="text-green-400 flex items-center gap-1">✔ Perfect Vercel Link (Strictly Lowercase)</span>
+                                  ) : (
+                                    <div className="flex items-center gap-3 flex-wrap">
+                                      {hasUppercase && <span className="text-red-400">✖ Has Capital Letters (Uppercase)</span>}
+                                      {hasSpaces && <span className="text-amber-400">✖ Has Unsafe Spaces</span>}
+                                    </div>
+                                  )}
+                                </div>
+                              </div>
+                              {!isOK && (
+                                <button
+                                  onClick={() => {
+                                    // Fix individual line
+                                    let fixedLine = line;
+                                    try {
+                                      if (line.startsWith("http://") || line.startsWith("https://")) {
+                                        const urlObj = new URL(line);
+                                        const parts = urlObj.pathname.split("/").map(part => slugifyText(part, { separator: slugSeparator, removeNumbers: false, lowercase: true }));
+                                        urlObj.pathname = parts.join("/");
+                                        fixedLine = urlObj.toString();
+                                      } else {
+                                        fixedLine = line.split("/").map(part => slugifyText(part, { separator: slugSeparator, removeNumbers: false, lowercase: true })).join("/");
+                                      }
+                                    } catch (e) {
+                                      fixedLine = line.toLowerCase().replace(/\s+/g, "-");
+                                    }
+                                    const updatedList = auditText.split("\n");
+                                    updatedList[index] = fixedLine;
+                                    setAuditText(updatedList.join("\n"));
+                                  }}
+                                  className="px-2.5 py-1 bg-red-950/40 border border-red-500/30 hover:bg-red-900/40 text-red-200 text-[10px] font-sans font-bold uppercase tracking-wider shrink-0 transition-colors"
+                                >
+                                  Fix Link
+                                </button>
+                              )}
+                            </div>
+                          );
+                        })}
+
+                        {auditText.split("\n").filter(line => line.trim()).length === 0 && (
+                          <div className="p-6 border border-dashed border-gray-800 text-center text-gray-500 text-xs italic">
+                            No links added. Paste some URLs to check them for casing errors.
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                  </div>
+                )}
+
+              </div>
+
+            </div>
+
+            {/* Premium success toast notification overlay */}
+            {copyNotification && (
+              <div className="fixed bottom-6 right-6 z-50 bg-[#d4af37] text-[#0d0611] font-semibold text-xs py-3 px-5 shadow-2xl flex items-center gap-2 border border-white/20 animate-slideIn">
+                <Check className="w-4 h-4 shrink-0 stroke-[3]" />
+                <span>Copied {copyNotification} Successfully to Clipboard!</span>
+              </div>
+            )}
+
+            {/* Backlink Provider Best Practices Card */}
+            <div className="bg-[#160a1f] border border-[#d4af37]/15 p-6 sm:p-8 space-y-4">
+              <h3 className="text-base font-display font-bold text-[#f3e5ab] uppercase tracking-wider">
+                Betty's Vercel & Backlink Delivery Guide (SEO Best Practices)
+              </h3>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-xs text-gray-300 font-light leading-relaxed">
+                <div className="space-y-2 p-4 bg-[#0d0611] border border-gray-800/80">
+                  <h4 className="font-semibold text-white uppercase text-[11px] tracking-wider text-[#d4af37]">1. Case-Sensitive Servers</h4>
+                  <p>Vercel builds use strict Linux rules. If a URL is shared with uppercase letters, but the project files or route files are entirely lowercase, a 404 is thrown, and your valuable backlink investment gets wasted.</p>
+                </div>
+                <div className="space-y-2 p-4 bg-[#0d0611] border border-gray-800/80">
+                  <h4 className="font-semibold text-white uppercase text-[11px] tracking-wider text-[#d4af37]">2. Avoid Duplicate Content</h4>
+                  <p>Search engines like Google index <code className="text-[#f3e5ab]">/Rooms</code> and <code className="text-[#f3e5ab]">/rooms</code> as separate pages. Using strict lowercase across your Vercel anchors avoids indexing duplicates and concentrates link equity.</p>
+                </div>
+                <div className="space-y-2 p-4 bg-[#0d0611] border border-gray-800/80">
+                  <h4 className="font-semibold text-white uppercase text-[11px] tracking-wider text-[#d4af37]">3. Standard Clean Anchors</h4>
+                  <p>Using standard lowercase hyphens is recommended by Google. Keeping your links and anchor URLs perfectly matched means faster indexing, better user readability, and zero page redirect chain errors.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        )}
+
       </main>
 
       {/* --- REUSABLE PREMIUM FOOTER --- */}
@@ -1702,6 +2301,11 @@ export default function App() {
                 <li>
                   <a href="#/contact" onClick={() => navigateTo("contact")} className="hover:text-[#d4af37] transition-colors">
                     Contact & Booking
+                  </a>
+                </li>
+                <li>
+                  <a href="#/linktool" onClick={() => navigateTo("linktool")} className="hover:text-[#d4af37] transition-colors">
+                    Vercel Link Ready (SEO)
                   </a>
                 </li>
               </ul>
