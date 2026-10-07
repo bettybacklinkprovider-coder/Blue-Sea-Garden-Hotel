@@ -217,7 +217,7 @@ export default function App() {
   // --- VERCEL LINK READY (SEO) STATES ---
   const [activeSubTab, setActiveSubTab] = useState<"single" | "batch" | "auditor">("single");
   const [singleText, setSingleText] = useState<string>("Luxury Suite Booking in Antalya Türkiye");
-  const [customDomain, setCustomDomain] = useState<string>("blue-sea-garden.vercel.app");
+  const [customDomain, setCustomDomain] = useState<string>("blueseagarden.vercel.app");
   const [slugSeparator, setSlugSeparator] = useState<string>("-");
   const [removeNumbers, setRemoveNumbers] = useState<boolean>(false);
   const [lowerCaseOnly, setLowerCaseOnly] = useState<boolean>(true);
@@ -228,7 +228,7 @@ export default function App() {
   );
 
   const [auditText, setAuditText] = useState<string>(
-    "https://blue-sea-garden.vercel.app/About-Us\nhttps://blue-sea-garden.vercel.app/ROOMS_AND_SUITES\nhttps://blue-sea-garden.vercel.app/Gallery-Main?idx=2\nhttps://blue-sea-garden.vercel.app/contact-booking\nhttps://blue-sea-garden.vercel.app/FAQ_section"
+    "https://blueseagarden.vercel.app/About-Us\nhttps://blueseagarden.vercel.app/ROOMS_AND_SUITES\nhttps://blueseagarden.vercel.app/Gallery-Main?idx=2\nhttps://blueseagarden.vercel.app/contact-booking\nhttps://blueseagarden.vercel.app/FAQ_section"
   );
 
   const copyToClipboard = (text: string, label: string) => {
@@ -416,7 +416,7 @@ export default function App() {
                 onClick={() => navigateTo("home")}
                 className="text-lg sm:text-xl font-display font-bold tracking-widest text-gold-gradient cursor-pointer block"
               >
-                BLUE SEA GARDEN HOTEL
+                BLUE SEA GARDEN HOTEL & GARDENS
               </a>
             </div>
 
@@ -567,7 +567,7 @@ export default function App() {
                 </div>
                 
                 <h1 className="text-4xl sm:text-6xl md:text-7xl font-display font-bold text-white tracking-wider mb-6 leading-tight drop-shadow-md text-wrap-balance">
-                  Blue Sea Garden Hotel
+                  Blue Sea Garden Hotel & Gardens
                 </h1>
                 
                 <p className="font-editorial italic text-[#f3e5ab] text-lg sm:text-xl md:text-2xl mb-4 text-wrap-balance">
@@ -629,7 +629,7 @@ export default function App() {
                       </span>
                       <div className="w-16 h-[2px] bg-gradient-to-r from-[#f3e5ab] to-[#aa7c11] my-2" />
                       <h2 className="text-3xl sm:text-4xl font-display font-bold text-white tracking-wide text-wrap-balance">
-                        Welcome to Blue Sea Garden Hotel
+                        Welcome to Blue Sea Garden Hotel & Gardens
                       </h2>
                     </div>
 
@@ -642,7 +642,7 @@ export default function App() {
                         Nestled in the historical center of Antalya, known as Kaleiçi (Muratpaşa), our boutique hotel encapsulates the timeless beauty of southern Türkiye. From traditional cobblestone paths right at our doorstep, to customized deluxe amenities inside, we craft a hospitality experience that stays with you.
                       </p>
                       <p>
-                        Whether you are here to marvel at Hadrian's Gate, sunbathe near the old harbor CLIFFS, or enjoy a tranquil, shaded morning in our private botanical courtyard garden, Blue Sea Garden Hotel is your home away from home. Every detail, from downy bedding to local organic ingredients, is tailored with friendly Turkish grace.
+                        Whether you are here to marvel at Hadrian's Gate, sunbathe near the old harbor CLIFFS, or enjoy a tranquil, shaded morning in our private botanical courtyard garden, Blue Sea Garden Hotel & Gardens is your home away from home. Every detail, from downy bedding to local organic ingredients, is tailored with friendly Turkish grace.
                       </p>
                     </div>
 
@@ -669,7 +669,7 @@ export default function App() {
                     <div className="absolute -inset-2 border border-[#d4af37]/20 translate-x-4 translate-y-4 z-0 hidden sm:block" />
                     <div className="relative z-10 glass-panel p-2 shadow-2xl">
                       <ResilientImage 
-                        src="/src/assets/images/lagado_garden_courtyard_1791357248872.jpg" 
+                        src="/assets/images/lagado_garden_courtyard_1791357248872.jpg" 
                         alt="Restful Garden Courtyard" 
                         className="w-full aspect-[4/3]"
                       />
@@ -905,7 +905,7 @@ export default function App() {
                     Your Antalya Escape Awaits
                   </h2>
                   <p className="text-gray-300 font-light text-base sm:text-lg leading-relaxed text-wrap-balance">
-                    Make your stay in Antalya comfortable, elegant and unforgettable at Blue Sea Garden Hotel. Booking directly guarantees the best rates and personalized welcome benefits.
+                    Make your stay in Antalya comfortable, elegant and unforgettable at Blue Sea Garden Hotel & Gardens. Booking directly guarantees the best rates and personalized welcome benefits.
                   </p>
                 </div>
 
@@ -1100,7 +1100,7 @@ export default function App() {
 
                   <div className="relative">
                     <ResilientImage 
-                      src="/src/assets/images/lagado_garden_courtyard_1791357248872.jpg" 
+                      src="/assets/images/lagado_garden_courtyard_1791357248872.jpg" 
                       alt="Hotel Comfort Details" 
                       className="w-full aspect-video lg:aspect-[4/3] rounded-none border border-[#d4af37]/20 shadow-2xl"
                     />
@@ -1698,8 +1698,8 @@ export default function App() {
                         
                         {/* Hotel Info Box inside vector map */}
                         <rect x="375" y="210" width="180" height="48" fill="#0d0611" stroke="#d4af37" strokeWidth="1" />
-                        <text x="385" y="228" fill="white" className="text-[11px] font-display font-bold">Blue Sea Garden Hotel</text>
-                        <text x="385" y="244" fill="#d4af37" className="text-[9px] uppercase tracking-wider font-semibold">Your Mediterranean Haven</text>
+                        <text x="385" y="228" fill="white" className="text-[11px] font-display font-bold">Blue Sea Garden Hotel & Gardens</text>
+                        <text x="385" y="244" fill="#d4af37" className="text-[9px] uppercase tracking-wider font-semibold">Your Blue Sea Garden Haven</text>
 
                       </svg>
                     </div>
@@ -2269,7 +2269,7 @@ export default function App() {
             {/* Column 1: Brand details */}
             <div className="space-y-4">
               <span className="text-lg font-display font-bold tracking-widest text-gold-gradient block">
-                BLUE SEA GARDEN HOTEL
+                BLUE SEA GARDEN HOTEL & GARDENS
               </span>
               <p className="font-editorial italic text-[#f3e5ab] text-sm">
                 A Refined Stay in Antalya
