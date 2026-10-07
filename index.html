@@ -38,10 +38,26 @@
       "priceRange": "$$$"
     }
     </script>
+    <!-- Link to Stylesheet -->
+    <link rel="stylesheet" href="/src/index.css" />
+
+    <!-- Embedded Critical Styling to eliminate FOUC and ensure immediate dark-luxury rendering -->
+    <style>
+      :root {
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        background-color: #0d0611;
+        color: #f6eeff;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        overflow-x: hidden;
+      }
+    </style>
   </head>
-  <body class="bg-[#0f0913] text-[#fbf6ff] antialiased">
+  <body class="bg-[#0d0611] text-[#f6eeff] antialiased">
     <div id="root"></div>
-    <script type="module" src="./src/main.tsx"></script>
+    <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
 

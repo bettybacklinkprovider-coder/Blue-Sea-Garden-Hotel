@@ -377,19 +377,19 @@ export default function App() {
   const ResilientImage = ({ src, alt, className }: { src: string; alt: string; className: string }) => {
     const [failed, setFailed] = useState(false);
     return (
-      <div className={`relative overflow-hidden ${className}`}>
-        {/* Background gradient mesh that always displays as fallback/skeleton */}
-        <div className="absolute inset-0 bg-gradient-to-tr from-[#1b0826] to-[#39154a] flex flex-col items-center justify-center p-4 text-center z-0">
-          <Sparkles className="w-8 h-8 text-[#d4af37] mb-2 animate-pulse" />
-          <span className="font-display text-xs text-[#f3e5ab] tracking-wider uppercase">Blue Sea Garden Hotel</span>
-          <span className="text-[10px] text-gray-400 mt-1">Antalya, Turkey</span>
-        </div>
-        {!failed && (
+      <div className={`relative overflow-hidden bg-[#180a22] ${className}`}>
+        {failed ? (
+          <div className="w-full h-full min-h-[140px] bg-gradient-to-tr from-[#1b0826] to-[#39154a] flex flex-col items-center justify-center p-4 text-center">
+            <Sparkles className="w-6 h-6 text-[#d4af37] mb-1" />
+            <span className="font-display text-xs text-[#f3e5ab] tracking-wider uppercase">Blue Sea Garden Hotel</span>
+            <span className="text-[10px] text-gray-400 mt-0.5">Antalya, Turkey</span>
+          </div>
+        ) : (
           <img 
             src={src} 
             alt={alt}
             referrerPolicy="no-referrer"
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105 z-10"
+            className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             onError={() => setFailed(true)}
           />
         )}
@@ -417,10 +417,9 @@ export default function App() {
                   e.preventDefault();
                   navigateTo("home");
                 }}
-                className="text-xs xs:text-sm sm:text-base md:text-lg lg:text-xl font-display font-bold tracking-widest text-gold-gradient cursor-pointer block whitespace-nowrap"
+                className="text-xs sm:text-base md:text-lg lg:text-xl font-display font-bold tracking-wider sm:tracking-widest text-gold-gradient cursor-pointer block whitespace-nowrap"
               >
-                <span className="hidden sm:inline">BLUE SEA GARDEN HOTEL & GARDENS</span>
-                <span className="inline sm:hidden">BLUE SEA GARDEN</span>
+                BLUE SEA GARDEN HOTEL & GARDENS
               </a>
             </div>
 
