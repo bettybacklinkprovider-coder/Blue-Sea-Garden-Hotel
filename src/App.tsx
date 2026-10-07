@@ -548,7 +548,7 @@ export default function App() {
               {/* Backing Luxury Image & Scrim Overlay */}
               <div className="absolute inset-0 z-0">
                 <ResilientImage 
-                  src="https://res.cloudinary.com/k7og2ybq/image/upload/v1791357282/unnamed_1.jpg" 
+                  src="/assets/images/lagado_hero_exterior_1791357223511.jpg" 
                   alt="Blue Sea Garden Hotel Exterior" 
                   className="w-full h-full"
                 />
