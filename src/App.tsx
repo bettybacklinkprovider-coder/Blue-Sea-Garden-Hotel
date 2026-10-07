@@ -64,7 +64,7 @@ const ROOMS_DATA: Room[] = [
     capacity: "2 Guests",
     beds: "1 Double Bed",
     size: "22 m²",
-    image: "/src/assets/images/lagado_elegant_room_1791357264775.jpg",
+    image: "/assets/images/lagado_elegant_room_1791357264775.jpg",
     description: "Our Standard Room balances warm, traditional Turkish design with contemporary convenience. Thoughtfully detailed with gold-trimmed fabrics and authentic Antalya stone accents, it offers a peaceful sanctuary.",
     view: "Charming Street View",
     amenities: ["Complimentary High-speed Wi-Fi", "Individually Controlled AC", "Full HD Smart TV", "Luxury Bath Products", "Personal Safety Box", "Gourmet Minibar"],
@@ -77,7 +77,7 @@ const ROOMS_DATA: Room[] = [
     capacity: "2 Guests",
     beds: "1 Royal King Bed",
     size: "30 m²",
-    image: "/src/assets/images/lagado_elegant_room_1791357264775.jpg",
+    image: "/assets/images/lagado_elegant_room_1791357264775.jpg",
     description: "The Deluxe Suite epitomizes luxury and romantic elegance. Spacious and light-filled, it boasts custom hand-finished gilded headboards, high plaster ceilings, and a delightful private balcony for evening relaxation.",
     view: "Private Balcony & Garden Vista",
     amenities: ["Private Balcony with Chairs", "Premium Espresso Machine", "Marble Walk-in Rain Shower", "Full HD Smart TV", "Complimentary High-speed Wi-Fi", "Luxury Bathrobes & Slippers"],
@@ -90,7 +90,7 @@ const ROOMS_DATA: Room[] = [
     capacity: "3 Guests",
     beds: "1 King Bed + 1 Daybed",
     size: "45 m²",
-    image: "/src/assets/images/lagado_elegant_room_1791357264775.jpg",
+    image: "/assets/images/lagado_elegant_room_1791357264775.jpg",
     description: "Immerse yourself in history with our gorgeous vaulted stone ceilings and premium Ottoman craftsmanship. The Superior King offers an extensive footprint including a grand lounge space and extra bedding options.",
     view: "Scenic Old Town & Courtyard",
     amenities: ["Spacious Lounge Setting", "Turkish Bath styled Shower", "Complimentary High-speed Wi-Fi", "Wine Chiller & Stemware", "Fresh Antalya Fruit Basket", "Premium Bluetooth Soundbar"],
@@ -103,7 +103,7 @@ const ROOMS_DATA: Room[] = [
     capacity: "4 Guests",
     beds: "1 King Bed + 2 Single Beds",
     size: "55 m²",
-    image: "/src/assets/images/lagado_elegant_room_1791357264775.jpg",
+    image: "/assets/images/lagado_elegant_room_1791357264775.jpg",
     description: "Expertly configured for absolute family comfort, this signature suite features two beautifully appointed connected bedrooms and generous outdoor space, ensuring privacy and relaxation for everyone.",
     view: "Mediterranean Breeze Patio",
     amenities: ["Two Private Bedrooms", "Two En-Suite Luxury Bathrooms", "Spacious Private Patio Area", "Dual Full HD Smart TVs", "Complimentary High-speed Wi-Fi", "In-room Dining Table"],
@@ -114,35 +114,35 @@ const ROOMS_DATA: Room[] = [
 const GALLERY_DATA = [
   {
     id: "gal-1",
-    url: "/src/assets/images/lagado_hero_exterior_1791357223511.jpg",
+    url: "/assets/images/lagado_hero_exterior_1791357223511.jpg",
     category: "Hotel",
     title: "Blue Sea Garden Exterior",
     desc: "Our historic Antalya stone facade illuminated beautifully at twilight."
   },
   {
     id: "gal-2",
-    url: "/src/assets/images/lagado_garden_courtyard_1791357248872.jpg",
+    url: "/assets/images/lagado_garden_courtyard_1791357248872.jpg",
     category: "Hotel",
     title: "Botanical Central Courtyard",
     desc: "A lush, serene botanical haven with gentle fountains away from city noise."
   },
   {
     id: "gal-3",
-    url: "/src/assets/images/lagado_elegant_room_1791357264775.jpg",
+    url: "/assets/images/lagado_elegant_room_1791357264775.jpg",
     category: "Rooms",
     title: "Elegant Ottoman Suite",
     desc: "Bespoke gold details, rich fabrics, and majestic vaulted ceilings."
   },
   {
     id: "gal-4",
-    url: "/src/assets/images/lagado_dining_patio_1791357294293.jpg",
+    url: "/assets/images/lagado_dining_patio_1791357294293.jpg",
     category: "Interiors",
     title: "Terrace Dining Experience",
     desc: "Gourmet Turkish breakfast overlooking the turquoise Mediterranean cliffs."
   },
   {
     id: "gal-5",
-    url: "/src/assets/images/lagado_hadrians_gate_1791357283304.jpg",
+    url: "/assets/images/lagado_hadrians_gate_1791357283304.jpg",
     category: "Antalya",
     title: "Historic Hadrian's Gate",
     desc: "The majestic ancient monument located just steps from Blue Sea Garden."
