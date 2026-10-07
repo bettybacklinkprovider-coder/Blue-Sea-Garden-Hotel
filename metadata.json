@@ -1,0 +1,6 @@
+{
+  "name": "Blue Sea Garden Hotel",
+  "description": "Experience comfort, elegance and authentic Antalya hospitality in a beautifully designed luxury hotel in Muratpaşa, Antalya, Türkiye.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

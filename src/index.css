@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --color-gold-light: #f3e5ab;
+    --color-gold: #d4af37;
+    --color-gold-dark: #aa7c11;
+    --color-plum-dark: #2a1135;
+    --color-purple-deep: #130718;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+
+  body {
+    background-color: #0d0611;
+    color: #f6eeff;
+  }
+
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #110816;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #cf9f33;
+    border-radius: 4px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #f7d070;
+  }
+}
+
+.font-display {
+  font-family: 'Cinzel', serif;
+}
+
+.font-editorial {
+  font-family: 'Playfair Display', serif;
+}
+
+.font-sans-body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+/* Glassmorphism overlays */
+.glass-panel {
+  background: rgba(30, 16, 42, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(212, 175, 55, 0.15);
+}
+
+.glass-panel-hover:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  box-shadow: 0 0 15px rgba(212, 175, 55, 0.1);
+  transform: translateY(-2px);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Text gold gradient */
+.text-gold-gradient {
+  background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Gold border gradient */
+.border-gold-gradient {
+  border-image: linear-gradient(135deg, #f3e5ab 0%, #d4af37 50%, #aa7c11 100%) 1;
+}
+
+/* Elegant gold button */
+.btn-gold {
+  background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+  color: #0d0611;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.btn-gold:hover {
+  background: linear-gradient(135deg, #f3e5ab 0%, #d4af37 100%);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+  transform: translateY(-1px);
+}
